@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заголовок документа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(90deg, #000000 0%, #72390a 80%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            transition: background-color 0.2s;
+        }
+        h1 {
+            margin-left: 250px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        button {
+            background: linear-gradient(90deg, #72390a 0%, #000000 80%);
+            font-size: 20px;
+            color: #ffffff;
+            margin: 0;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            color: rgb(26, 10, 255);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Ссылки <a href="http://192.168.1.142">Сервера</a></h1>
+</header>
+<form action="http://192.168.1.142:30024">
+    <button type="submit">qbitTORRENT</button>
+</form>
+<form action="http://192.168.1.142:30013">
+    <button type="submit">jellyfin</button>
+</form>
+
+<script>
+    document.addEventListener("mousemove", (event) => {
+        let x = event.clientX / window.innerWidth;
+        let y = event.clientY / window.innerHeight;
+
+        let red = Math.round(x * 255);
+        let green = Math.round(y * 255);
+        let blue = Math.round((1 - x) * 255);
+
+        document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+    });
+</script>
+
+</body>
+</html>

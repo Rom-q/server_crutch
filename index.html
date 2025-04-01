@@ -1,9 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Сылки сервера</title>
+    <title>Заголовок документа</title>
+    <style>
+      body {
+            font-family: Arial, sans-serif;
+            background:  linear-gradient(
+            90deg,
+            #000000 0%,
+            #72390a 80%
+            );
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+      }
+      h1{
+        margin-left: 250px;
+      }
+      form{
+        margin-bottom: 30px;
+      }
+      button{
+        background:  linear-gradient(
+            90deg,
+            #72390a 0%,
+            #000000 80%
+            );
+            font-size: 20px;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+      }
+      button:hover{
+        color:rgb(26, 10, 255);
+      }
+    </style>
   </head>
   <body>
-    <button onclick="window.location.href = 'https://w3docs.com';">Click Here</button>
+    <header>
+      <h1>Ссылки  <a href="http://192.168.1.142">Сервера</a></h1>
+    </header>
+    <form action="http://192.168.1.142:30024">
+      <button type="submit">qbitTORRENT</button>
+    </form>
+    <h2>
+      Логин: admin      Пароль: 121212
+    </h2>
+    <form action="http://192.168.1.142:30013">
+      <button type="submit">jellyfin</button>
+    </form>
+    <h2>
+      Логин: home      Пароль: home
+    </h2>
   </body>
 </html>
