@@ -14,6 +14,62 @@
             margin: 0;
             padding: 0;
       }
+      .dropdown-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px; 
+            z-index: 1000;
+        }
+        
+        .dropdown {
+            width: 100%;
+            background-color: #333;
+            color: white;
+        }
+        
+        .dropdown-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #444;
+        }
+        
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: #555;
+        }
+        
+        .dropdown-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .dropdown-content li {
+            padding: 12px 20px;
+            border-top: 1px solid #666;
+        }
+        
+        .dropdown-content li:hover {
+            background-color: #666;
+        }
+        
+        .dropdown.active .dropdown-content {
+            max-height: 500px; 
+        }
+        
+        .arrow {
+            transition: transform 0.3s;
+        }
+        
+        .dropdown.active .arrow {
+            transform: rotate(180deg);
+        }
       h1{
         margin-left: 250px;
       }
@@ -37,6 +93,22 @@
     </style>
   </head>
   <body>
+    <div class="dropdown-container">
+      <div class="dropdown" id="dropdown">
+          <div class="dropdown-header" id="dropdownHeader">
+              <span>Совершенно секретно</span>
+              <span class="arrow">▼</span>
+          </div>
+          <div class="dropdown-content">
+              <ul>
+                  <li><a href="192.168.1.142:30118" style="color: white; text-decoration: none;">Jackett</a></li>
+                  <li><a href="192.168.1.142:31015" style="color: white; text-decoration: none;">portainer</a></li>
+                  <li><a href="192.168.1.142:30025" style="color: white; text-decoration: none;">radarr</a></li>
+                  <li><a href="192.168.1.142:30113" style="color: white; text-decoration: none;">sonarr</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
     <header>
       <h1>Ссылки  <a href="http://192.168.1.142">Сервера</a></h1>
     </header>
@@ -52,5 +124,14 @@
       width="800"
       height="500">
     </iframe>
+    
+    <script>
+      const dropdown = document.getElementById('dropdown');
+      const dropdownHeader = document.getElementById('dropdownHeader');
+      
+      dropdownHeader.addEventListener('click', () => {
+          dropdown.classList.toggle('active');
+      });
+  </script>
   </body>
 </html>
