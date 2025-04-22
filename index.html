@@ -1,140 +1,473 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Ссылки на сервер</title>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Домашний сервер</title>
     <style>
-      body {
-            font-family: Arial, sans-serif;
-            background:  linear-gradient(
-            90deg,
-            #000000 0%,
-            #72390a 80%
-            );
-            color: #ffffff;
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --header-color-light: #6a11cb;
+            --header-color-dark: #0f2027;
+            --header-bg: linear-gradient(135deg, var(--header-color-light) 0%, #2575fc 100%);
+            --card-bg: #fff;
+            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --footer-bg: #333;
+            --admin-panel-bg: rgba(40, 40, 40, 0.95);
+            --buttons-offset: 0;
+            --underline-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .dark-mode {
+            --bg-color: #111111;
+            --text-color: #f0f0f0;
+            --header-bg: linear-gradient(135deg, var(--header-color-dark) 0%, #203a43 50%, #2c5364 100%);
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            --footer-bg: #1a1a1a;
+            --admin-panel-bg: rgba(20, 20, 20, 0.98);
+            --underline-color: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
             margin: 0;
             padding: 0;
-      }
-      .dropdown-container {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 200px; 
-            z-index: 1000;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.6s ease, color 0.6s ease;
         }
         
-        .dropdown {
-            width: 100%;
-            background-color: #333;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        header {
             color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
         
-        .dropdown-header {
-            padding: 15px 20px;
+        /* Плавная анимация смены темы с эффектом "наливания" */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--header-bg);
+            z-index: -1;
+            transition: background 0.8s ease;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--header-color-dark);
+            z-index: -2;
+            transition: left 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        
+        .dark-mode header::after {
+            left: 0;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 0 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Стильное подчеркивание ссылки слева направо */
+        h1 a {
+            color: inherit;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 3px;
+        }
+        
+        h1 a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--underline-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        
+        h1 a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Анимация градиента для фона */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .header-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+            transform: translateX(var(--buttons-offset));
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .theme-toggle, .admin-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background-color: #444;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease, transform 0.2s ease;
         }
         
-        .dropdown-content {
-            max-height: 0;
+        .theme-toggle:hover, .admin-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(15deg);
+        }
+        
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: var(--admin-panel-bg);
+            color: white;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            overflow-y: auto;
+        }
+        
+        .admin-panel.open {
+            right: 0;
+        }
+        
+        .admin-apps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .admin-app {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-app:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .admin-app img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .admin-app:hover img {
+            transform: scale(1.1);
+        }
+        
+        .admin-app .app-name {
+            font-size: 0.9rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        .apps-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+        
+        .app-card {
+            width: 160px;
+            height: 160px;
             overflow: hidden;
-            transition: max-height 0.3s ease;
-            background-color: #555;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
         }
         
-        .dropdown-content ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        .app-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        .dropdown-content li {
-            padding: 12px 20px;
-            border-top: 1px solid #666;
+        .app-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         
-        .dropdown-content li:hover {
-            background-color: #666;
+        .app-card .app-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            transition: color 0.3s ease;
         }
         
-        .dropdown.active .dropdown-content {
-            max-height: 500px; 
+        .app-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         
-        .arrow {
-            transition: transform 0.3s;
+        .app-card:hover img {
+            transform: scale(1.15);
         }
         
-        .dropdown.active .arrow {
-            transform: rotate(180deg);
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--footer-bg);
+            color: white;
+            margin-top: auto;
+            font-size: 0.8rem;
         }
-      h1{
-        margin-left: 250px;
-      }
-      form{
-        margin-bottom: 30px;
-      }
-      button{
-        background:  linear-gradient(
-            90deg,
-            #72390a 0%,
-            #000000 80%
-            );
-            font-size: 20px;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-      }
-      button:hover{
-        color:rgb(26, 10, 255);
-      }
+        
+        @media (max-width: 900px) {
+            .app-card {
+                width: 140px;
+                height: 140px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .admin-panel {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                padding: 1.2rem 0;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .header-buttons {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .theme-toggle, .admin-toggle {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .apps-grid {
+                gap: 1rem;
+            }
+            
+            .app-card {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .app-card img {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .admin-panel {
+                width: 85%;
+                right: -85%;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .apps-grid {
+                gap: 0.8rem;
+            }
+            
+            .app-card {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .app-card img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .app-card .app-name {
+                font-size: 0.8rem;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="dropdown-container">
-      <div class="dropdown" id="dropdown">
-          <div class="dropdown-header" id="dropdownHeader">
-              <span>Совершенно секретно</span>
-              <span class="arrow">▼</span>
-          </div>
-          <div class="dropdown-content">
-              <ul>
-                  <li><a href="http://192.168.1.142:31015" style="color: white; text-decoration: none;">portainer✔</a></li>
-                  <li><a href="http://192.168.1.142:30118" style="color: white; text-decoration: none;">jackett</a></li>
-                  <li><a href="http://192.168.1.142:30025" style="color: white; text-decoration: none;">radarr</a></li>
-                  <li><a href="http://192.168.1.142:30113" style="color: white; text-decoration: none;">sonarr</a></li>
-              </ul>
-          </div>
-      </div>
-  </div>
+</head>
+<body>
     <header>
-      <h1>Ссылки  <a href="http://192.168.1.142">Сервера</a></h1>
+        <div class="header-buttons">
+            <button class="admin-toggle" title="Панель администратора">⚙️</button>
+            <button class="theme-toggle" title="Переключить тему">☀️</button>
+        </div>
+        <h1>Домашний <a href="http://192.168.1.142">сервер</a></h1>
     </header>
-    <form action="http://192.168.1.142:30024">
-      <button type="submit">Торрент</button>
-    </form>
-    <form action="http://192.168.1.142:30013">
-      <button type="submit">Фильмы</button>
-    </form>
-    <form action="http://192.168.1.142:20800">
-      <button type="submit">Фото</button>
-    </form>
-    <iframe
-      src="/passwords"
-      title="passwords"
-      width="800"
-      height="500">
-    </iframe>
+    
+    <div class="admin-panel">
+        <h3>Совершенно секретно</h3>
+        <div class="admin-apps">
+            <div class="admin-app" data-url="http://192.168.1.142:31015">
+                <img src="img/portainer.png" alt="Portainer">
+                <div class="app-name">Portainer</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="apps-grid">
+            <div class="app-card">
+                <img src="img/jellyfin.svg" alt="Приложение 1">
+                <div class="app-name">jellyfin</div>
+            </div>
+            <div class="app-card">
+                <img src="img/photoprism.svg" alt="Приложение 2">
+                <div class="app-name">photoprism</div>
+            </div>
+            <div class="app-card">
+                <img src="img/qbittorrent.png" alt="Приложение 3">
+                <div class="app-name">qbittorrent</div>
+            </div>
+        </div>
+    </div>
     
     <script>
-      const dropdown = document.getElementById('dropdown');
-      const dropdownHeader = document.getElementById('dropdownHeader');
-      
-      dropdownHeader.addEventListener('click', () => {
-          dropdown.classList.toggle('active');
-      });
-  </script>
-  </body>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                themeToggle.textContent = isDark ? '🌙' : '☀️';
+                localStorage.setItem('darkMode', isDark);
+            });
+            
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = '🌙';
+            }
+            
+            const adminToggle = document.querySelector('.admin-toggle');
+            const adminPanel = document.querySelector('.admin-panel');
+            
+            adminToggle.addEventListener('click', function() {
+                const isOpen = adminPanel.classList.toggle('open');
+                
+                if (isOpen) {
+                    document.documentElement.style.setProperty('--buttons-offset', '-300px');
+                } else {
+                    document.documentElement.style.setProperty('--buttons-offset', '0');
+                }
+            });
+            
+            document.querySelectorAll('.admin-app').forEach(app => {
+                app.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    window.open(url, '_blank');
+                });
+            });
+            
+            const appCards = document.querySelectorAll('.app-card');
+            
+            function showCards() {
+                appCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 150);
+                });
+            }
+            
+            setTimeout(showCards, 300);
+            
+            appCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const appName = card.querySelector('.app-name').textContent;
+                    let url;
+                    
+                    switch(appName) {
+                        case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
+                        case 'photoprism': url = 'http://192.168.1.142:30024'; break;
+                        case 'qbittorrent': url = 'http://192.168.1.142:20800'; break;
+                        default: url = '#';
+                    }
+                    
+                    window.open(url, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
 </html>
