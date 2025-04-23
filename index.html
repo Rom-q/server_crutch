@@ -14,9 +14,14 @@
             --card-bg: #fff;
             --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             --footer-bg: #333;
-            --admin-panel-bg: rgba(40, 40, 40, 0.95);
+            --admin-panel-bg: #f5f5f5;
             --buttons-offset: 0;
             --underline-color: rgba(255, 255, 255, 0.7);
+            --passwords-panel-color: #333;
+            --passwords-item-color: #fff;
+            --admin-app-bg: #fff;
+            --admin-color: #333;
+            --admin-app-hover: #d3d3d3;
         }
 
         .dark-mode {
@@ -28,6 +33,11 @@
             --footer-bg: #1a1a1a;
             --admin-panel-bg: rgba(20, 20, 20, 0.98);
             --underline-color: rgba(255, 255, 255, 0.9);
+            --passwords-panel-color: #f0f0f0;
+            --passwords-item-color: #2d2d2d;
+            --admin-app-bg: #2d2d2d;
+            --admin-color: #f0f0f0;
+            --admin-app-hover: #f0f0f080;
         }
 
         * {
@@ -49,7 +59,7 @@
         
         header {
             color: white;
-            padding: 1.5rem 0;
+            padding: 3rem 0 1.5rem; 
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -85,8 +95,8 @@
         }
         
         h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             padding: 0 20px;
             position: relative;
@@ -126,9 +136,10 @@
         
         .header-buttons {
             position: absolute;
-            top: 20px;
+            top: 20px; 
             right: 20px;
             display: flex;
+            flex-direction: column;
             gap: 10px;
             z-index: 10;
             transform: translateX(var(--buttons-offset));
@@ -162,7 +173,7 @@
             width: 300px;
             height: 100vh;
             background: var(--admin-panel-bg);
-            color: white;
+            color: var(--admin-color);
             padding: 20px;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
             z-index: 100;
@@ -184,14 +195,14 @@
             display: flex;
             align-items: center;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--admin-app-bg);
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .admin-app:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--admin-app-hover);
             transform: translateX(5px);
         }
         
@@ -306,7 +317,7 @@
         
         @media (max-width: 600px) {
             header {
-                padding: 1.2rem 0;
+                padding: 2rem 0 1.2rem; 
             }
             
             h1 {
@@ -315,7 +326,7 @@
             }
             
             .header-buttons {
-                top: 15px;
+                top: 25px; 
                 right: 15px;
             }
             
@@ -380,8 +391,8 @@
             left: 0;
             width: 100%;
             padding: 12px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
+            background: var(--passwords-button-color);
+            color: var(--passwords-button-color);
             border: none;
             font-size: 0.9rem;
             z-index: 50;
@@ -395,7 +406,7 @@
             width: 100%;
             max-height: 60vh;
             background: var(--passwords-panel-bg);
-            color: white;
+            color: var(--passwords-panel-color);
             padding: 15px;
             z-index: 49;
             overflow-y: auto;
@@ -416,7 +427,7 @@
         }
         
         .password-item {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--passwords-item-color);
             padding: 12px;
             border-radius: 8px;
         }
@@ -445,6 +456,8 @@
             }
         }
     </style>
+</head>
+<body>
     <header>
         <div class="header-buttons">
             <button class="admin-toggle" title="Панель администратора">⚙️</button>
