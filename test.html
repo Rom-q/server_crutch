@@ -3,62 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Домашний сервер</title>
+    <title>Волнистая анимация полосы</title>
     <style>
+
         :root {
             --bg-color: #f5f5f5;
             --text-color: #333;
-            --header-color-light: #6a11cb;
-            --header-color-dark: #0f2027;
-            --header-bg: linear-gradient(135deg, var(--header-color-light) 0%, #2575fc 100%);
-            --card-bg: #fff;
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            --footer-bg: #333;
-            --admin-panel-bg: rgba(40, 40, 40, 0.95);
-            --buttons-offset: 0;
-            --underline-color: rgba(255, 255, 255, 0.7);
-            --passwords-panel-bg: rgba(30, 30, 30, 0.9);
+            --header-bg: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --wave-color: rgba(255, 255, 255, 0.8);
+            --wave-speed: 8s;
         }
 
         .dark-mode {
             --bg-color: #111111;
             --text-color: #f0f0f0;
-            --header-bg: linear-gradient(135deg, var(--header-color-dark) 0%, #203a43 50%, #2c5364 100%);
-            --card-bg: #2d2d2d;
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            --footer-bg: #1a1a1a;
-            --admin-panel-bg: rgba(20, 20, 20, 0.98);
-            --underline-color: rgba(255, 255, 255, 0.9);
-            --passwords-panel-bg: rgba(10, 10, 10, 0.95);
+            --header-bg: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --wave-color: rgba(255, 255, 255, 0.95);
+            --wave-speed: 6s; 
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-            transition: background-color 0.6s ease, color 0.6s ease;
-        }
-        
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-bottom: 60px; /* Добавляем отступ для кнопки паролей */
+            transition: background-color 1.5s ease, color 1.5s ease;
         }
-        
+
+
         header {
-            color: white;
-            padding: 1.5rem 0;
             text-align: center;
+            padding: 2rem 0;
             position: relative;
             overflow: hidden;
-            z-index: 1;
+            width: 100%;
         }
-        
+
+
         header::before {
             content: '';
             position: absolute;
@@ -67,455 +47,62 @@
             width: 100%;
             height: 100%;
             background: var(--header-bg);
-            z-index: -1;
-            transition: background 0.8s ease;
+            transition: background 1.5s ease;
         }
-        
+
+
         header::after {
             content: '';
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--header-color-dark);
-            z-index: -2;
-            transition: left 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            width: 200%;
+            height: 40px;
+            background: url('data:image/svg+xml,<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q30 5 60 20 T120 20 V40 H0 Z" fill="%23ffffff"/></svg>');
+            animation: waveMove var(--wave-speed) infinite ease-in-out;
+            transition: left 1s cubic-bezier(0.5, 0, 0.5, 1);
         }
-        
+
+
         .dark-mode header::after {
             left: 0;
         }
-        
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            padding: 0 20px;
-            position: relative;
-            display: inline-block;
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-        
-        h1 a {
-            color: inherit;
-            text-decoration: none;
-            position: relative;
-            padding-bottom: 3px;
-        }
-        
-        h1 a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--underline-color);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-        }
-        
-        h1 a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .header-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-            transform: translateX(var(--buttons-offset));
-            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-        
-        .theme-toggle, .admin-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease, transform 0.2s ease;
-        }
-        
-        .theme-toggle:hover, .admin-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1) rotate(15deg);
-        }
-        
-        .admin-panel {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100vh;
-            background: var(--admin-panel-bg);
-            color: white;
-            padding: 20px;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            overflow-y: auto;
-        }
-        
-        .admin-panel.open {
-            right: 0;
-        }
-        
-        .admin-apps {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+
+
+        .theme-toggle {
             margin-top: 20px;
-        }
-        
-        .admin-app {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-app:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-        
-        .admin-app img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            border-radius: 5px;
-            transition: transform 0.3s ease;
-        }
-        
-        .admin-app:hover img {
-            transform: scale(1.1);
-        }
-        
-        .admin-app .app-name {
-            font-size: 0.9rem;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 1rem auto;
-            padding: 0 20px;
-            flex: 1;
-        }
-        
-        .apps-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-            padding: 10px;
-        }
-        
-        .app-card {
-            width: 160px;
-            height: 160px;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: var(--card-shadow);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-            cursor: pointer;
-            position: relative;
-            flex-shrink: 0;
-            background: var(--card-bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px;
-        }
-        
-        .app-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .app-card img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 10px;
-            border-radius: 15px;
-            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-        
-        .app-card .app-name {
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: var(--text-color);
-            transition: color 0.3s ease;
-        }
-        
-        .app-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .app-card:hover img {
-            transform: scale(1.15);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: var(--footer-bg);
-            color: white;
-            margin-top: auto;
-            font-size: 0.8rem;
-        }
-        
-        /* Стили для кнопки и панели паролей */
-        .passwords-button {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
+            padding: 10px 15px;
+            background-color: var(--wave-color);
+            color: #333;
             border: none;
-            font-size: 1rem;
+            border-radius: 5px;
             cursor: pointer;
-            z-index: 50;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            outline: none;
+            transition: background-color 0.5s ease, transform 0.3s ease;
         }
-        
-        .passwords-button:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
-        
-        .passwords-panel {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
-            background: var(--passwords-panel-bg);
-            color: white;
-            padding: 20px;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 49;
-            overflow-y: auto;
-            transition: bottom 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-        
-        .passwords-panel.open {
-            bottom: 0;
-        }
-        
-        .passwords-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .password-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .password-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-        }
-        
-        .password-service {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #4fc3f7;
-        }
-        
-        .password-credentials {
-            font-family: monospace;
-            font-size: 0.9rem;
-            word-break: break-all;
-        }
-        
-        @media (max-width: 900px) {
-            .app-card {
-                width: 140px;
-                height: 140px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .admin-panel {
-                width: 250px;
-            }
-            
-            .passwords-list {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            header {
-                padding: 1.2rem 0;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-                margin-top: 0.5rem;
-            }
-            
-            .header-buttons {
-                top: 15px;
-                right: 15px;
-            }
-            
-            .theme-toggle, .admin-toggle {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
-            
-            .apps-grid {
-                gap: 1rem;
-            }
-            
-            .app-card {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .app-card img {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .admin-panel {
-                width: 85%;
-                right: -85%;
-            }
-        }
-        
-        @media (max-width: 400px) {
-            .apps-grid {
-                gap: 0.8rem;
-            }
-            
-            .app-card {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .app-card img {
-                width: 50px;
-                height: 50px;
-            }
-            
-            .app-card .app-name {
-                font-size: 0.8rem;
-            }
-            
-            .password-item {
-                padding: 10px;
-            }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="theme-toggle">Переключить тему</button>
+
     <header>
-        <div class="header-buttons">
-            <button class="admin-toggle" title="Панель администратора">⚙️</button>
-            <button class="theme-toggle" title="Переключить тему">☀️</button>
-        </div>
         <h1>Домашний <a href="http://192.168.1.142">сервер</a></h1>
     </header>
-    
-    <div class="admin-panel">
-        <h3>Совершенно секретно</h3>
-        <div class="admin-apps">
-            <div class="admin-app" data-url="http://192.168.1.142:31015">
-                <img src="img/portainer.png" alt="Portainer">
-                <div class="app-name">Portainer</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="apps-grid">
-            <div class="app-card">
-                <img src="img/jellyfin.svg" alt="Приложение 1">
-                <div class="app-name">jellyfin</div>
-            </div>
-            <div class="app-card">
-                <img src="img/photoprism.svg" alt="Приложение 2">
-                <div class="app-name">photoprism</div>
-            </div>
-            <div class="app-card">
-                <img src="img/qbittorrent.png" alt="Приложение 3">
-                <div class="app-name">qbittorrent</div>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        Домашний сервер © 2023
-    </footer>
-    
-    <!-- Кнопка и панель паролей -->
-    <button class="passwords-button">Показать пароли</button>
-    <div class="passwords-panel">
-        <h3>Доступы к сервисам</h3>
-        <div class="passwords-list">
-            <div class="password-item">
-                <div class="password-service">Jellyfin</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: jellyfin123</div>
-            </div>
-            <div class="password-item">
-                <div class="password-service">PhotoPrism</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: photoprism456</div>
-            </div>
-            <div class="password-item">
-                <div class="password-service">qBittorrent</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: qbit789</div>
-            </div>
-            <div class="password-item">
-                <div class="password-service">Portainer</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: portainerPass</div>
-            </div>
-            <div class="password-item">
-                <div class="password-service">SSH</div>
-                <div class="password-credentials">Логин: root<br>Пароль: sshRootPass</div>
-            </div>
-        </div>
-    </div>
-    
+
+    <main>
+        <p>Тестовая страница с волнистой полосой, плавными эффектами и цветами.</p>
+    </main>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.querySelector('.theme-toggle');
@@ -525,76 +112,11 @@
                 themeToggle.textContent = isDark ? '🌙' : '☀️';
                 localStorage.setItem('darkMode', isDark);
             });
-            
+
             if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 themeToggle.textContent = '🌙';
             }
-            
-            const adminToggle = document.querySelector('.admin-toggle');
-            const adminPanel = document.querySelector('.admin-panel');
-            
-            adminToggle.addEventListener('click', function() {
-                const isOpen = adminPanel.classList.toggle('open');
-                
-                if (isOpen) {
-                    document.documentElement.style.setProperty('--buttons-offset', '-300px');
-                } else {
-                    document.documentElement.style.setProperty('--buttons-offset', '0');
-                }
-            });
-            
-            document.querySelectorAll('.admin-app').forEach(app => {
-                app.addEventListener('click', function() {
-                    const url = this.getAttribute('data-url');
-                    window.open(url, '_blank');
-                });
-            });
-            
-            const appCards = document.querySelectorAll('.app-card');
-            
-            function showCards() {
-                appCards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.classList.add('visible');
-                    }, index * 150);
-                });
-            }
-            
-            setTimeout(showCards, 300);
-            
-            appCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const appName = card.querySelector('.app-name').textContent;
-                    let url;
-                    
-                    switch(appName) {
-                        case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
-                        case 'photoprism': url = 'http://192.168.1.142:30024'; break;
-                        case 'qbittorrent': url = 'http://192.168.1.142:20800'; break;
-                        default: url = '#';
-                    }
-                    
-                    window.open(url, '_blank');
-                });
-            });
-            
-            // Управление панелью паролей
-            const passwordsButton = document.querySelector('.passwords-button');
-            const passwordsPanel = document.querySelector('.passwords-panel');
-            
-            passwordsButton.addEventListener('click', function() {
-                const isOpen = passwordsPanel.classList.toggle('open');
-                passwordsButton.textContent = isOpen ? 'Скрыть пароли' : 'Показать пароли';
-            });
-            
-            // Закрытие панели при клике вне ее области
-            document.addEventListener('click', function(event) {
-                if (!passwordsPanel.contains(event.target) && event.target !== passwordsButton) {
-                    passwordsPanel.classList.remove('open');
-                    passwordsButton.textContent = 'Показать пароли';
-                }
-            });
         });
     </script>
 </body>
