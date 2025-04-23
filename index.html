@@ -22,6 +22,9 @@
             --admin-app-bg: #fff;
             --admin-color: #333;
             --admin-app-hover: #d3d3d3;
+            --passwords-panel-bg: #f5f5f5;
+            --passwords-panel-shadow: 0 -5px 15px rgb(0, 0, 0);
+            --passwords-button-color: #333;
         }
 
         .dark-mode {
@@ -29,7 +32,7 @@
             --text-color: #f0f0f0;
             --header-bg: linear-gradient(135deg, var(--header-color-dark) 0%, #203a43 50%, #2c5364 100%);
             --card-bg: #2d2d2d;
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            --card-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
             --footer-bg: #1a1a1a;
             --admin-panel-bg: rgba(20, 20, 20, 0.98);
             --underline-color: rgba(255, 255, 255, 0.9);
@@ -38,6 +41,9 @@
             --admin-app-bg: #2d2d2d;
             --admin-color: #f0f0f0;
             --admin-app-hover: #f0f0f080;
+            --passwords-panel-bg: #111111;
+            --passwords-panel-shadow: 0 -10px 20px rgba(255, 255, 255, 0.3);
+            --passwords-button-color: #f0f0f0;
         }
 
         * {
@@ -387,16 +393,17 @@
         
         .passwords-button {
             position: fixed;
+            cursor: pointer;
             bottom: 0;
             left: 0;
             width: 100%;
             padding: 12px;
-            background: var(--passwords-button-color);
+            background: var(--passwords-button-bg);
             color: var(--passwords-button-color);
             border: none;
             font-size: 0.9rem;
             z-index: 50;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
         
         .passwords-panel {
@@ -412,7 +419,7 @@
             overflow-y: auto;
             transition: bottom 0.3s ease;
             border-radius: 10px 10px 0 0;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--passwords-panel-shadow);
         }
         
         .passwords-panel.open {
