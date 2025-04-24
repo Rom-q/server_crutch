@@ -486,16 +486,20 @@
     <div class="container">
         <div class="apps-grid">
             <div class="app-card">
-                <img src="img/jellyfin.svg" alt="Приложение 1">
+                <img src="img/jellyfin.svg" alt="jellyfin">
                 <div class="app-name">jellyfin</div>
             </div>
             <div class="app-card">
-                <img src="img/photoprism.svg" alt="Приложение 2">
+                <img src="img/photoprism.svg" alt="photoprism">
                 <div class="app-name">photoprism</div>
             </div>
             <div class="app-card">
-                <img src="img/qbittorrent.png" alt="Приложение 3">
+                <img src="img/qbittorrent.png" alt="qbittorrent">
                 <div class="app-name">qbittorrent</div>
+            </div>
+            <div class="app-card">
+                <img src="img/smb.png" alt="Приложение 4">
+                <div class="app-name">smb</div>
             </div>
         </div>
     </div>
@@ -516,12 +520,12 @@
                 <div class="password-credentials">Логин: admin<br>Пароль: 121212</div>
             </div>
             <div class="password-item">
-                <div class="password-service">Portainer</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: </div>
+                <div class="password-service">smb</div>
+                <div class="password-credentials">Логин: home<br>Пароль: home</div>
             </div>
             <div class="password-item">
-                <div class="password-service">SMB</div>
-                <div class="password-credentials">Логин: home<br>Пароль: home</div>
+                <div class="password-service">Portainer</div>
+                <div class="password-credentials">Логин: admin<br>Пароль: </div>
             </div>
         </div>
     </div>
@@ -582,6 +586,7 @@
                         case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
                         case 'photoprism': url = 'http://192.168.1.142:20800'; break;
                         case 'qbittorrent': url = 'http://192.168.1.142:30024'; break;
+                        case 'smb': url = 'file://truenas/mnt/cc/'; break;
                         default: url = '#';
                     }
                     

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Background</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --shape-opacity: 0.6;
+            --text-color: #f0f0f0;
+        }
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: var(--bg-color);
+            height: 100vh;
+            transition: background 0.5s ease;
+        }
+        
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: var(--shape-opacity);
+            mix-blend-mode: multiply;
+            will-change: transform;
+            transition: opacity 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            color: var(--text-color);
+            text-align: center;
+            padding: 20vh 20px;
+            font-family: 'Arial', sans-serif;
+            transition: color 0.5s ease;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="background-container" id="background"></div>
+    
+    <div class="content">
+
+    </div>
+
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+        const background = document.getElementById('background');
+        const shapeCount = 6 + Math.floor(Math.random() * 4);
+        const shapes = [];
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+        
+        const bufferZone = 200; 
+        
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const a = 0.5 + Math.random() * 0.3; 
+            return `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+        
+        for (let i = 0; i < shapeCount; i++) {
+            const shape = document.createElement('div');
+            shape.className = 'shape';
+
+            const size = 200 + Math.random() * 400;
+            shape.style.width = `${size}px`;
+            shape.style.height = `${size}px`;
+
+            shape.style.left = '0';
+            shape.style.top = '0';
+            
+            const x = Math.random() * (windowWidth + bufferZone * 2) - bufferZone;
+            const y = Math.random() * (windowHeight + bufferZone * 2) - bufferZone;
+            
+            const speedX = (Math.random() - 0.5) * 1.5;
+            const speedY = (Math.random() - 0.5) * 1.5;
+            
+            const color = getRandomColor();
+            shape.style.backgroundColor = color;
+            
+            shapes.push({
+                element: shape,
+                x, y, size,
+                speedX, speedY,
+                color: color
+            });
+            
+            shape.style.transform = `translate(${x}px, ${y}px)`;
+            background.appendChild(shape);
+        }
+        
+        function animate() {
+            for (const shape of shapes) {
+                shape.x += shape.speedX;
+                shape.y += shape.speedY;
+                
+                if (shape.x < -shape.size - bufferZone) shape.x = windowWidth + bufferZone;
+                if (shape.x > windowWidth + bufferZone) shape.x = -shape.size - bufferZone;
+                if (shape.y < -shape.size - bufferZone) shape.y = windowHeight + bufferZone;
+                if (shape.y > windowHeight + bufferZone) shape.y = -shape.size - bufferZone;
+                
+                shape.element.style.transform = `translate(${shape.x}px, ${shape.y}px)`;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', function() {
+            windowWidth = window.innerWidth;
+            windowHeight = window.innerHeight;
+        });
+    });
+    </script>
+</body>
+</html>

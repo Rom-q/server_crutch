@@ -25,6 +25,8 @@
             --passwords-panel-bg: #f5f5f5;
             --passwords-panel-shadow: 0 -5px 15px rgb(0, 0, 0);
             --passwords-button-color: #333;
+            --bg-switcher-opacity: 0;
+            --bg-switcher-visibility: hidden;
         }
 
         .dark-mode {
@@ -44,6 +46,8 @@
             --passwords-panel-bg: #111111;
             --passwords-panel-shadow: 0 -10px 20px rgba(255, 255, 255, 0.3);
             --passwords-button-color: #f0f0f0;
+            --bg-switcher-opacity: 1;
+            --bg-switcher-visibility: visible;
         }
 
         * {
@@ -152,7 +156,7 @@
             transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         
-        .theme-toggle, .admin-toggle {
+        .theme-toggle, .admin-toggle, .bg-switch-button {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -167,9 +171,18 @@
             transition: all 0.3s ease, transform 0.2s ease;
         }
         
-        .theme-toggle:hover, .admin-toggle:hover {
+        .theme-toggle:hover, .admin-toggle:hover, .bg-switch-button:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.1) rotate(15deg);
+        }
+        
+        .bg-switch-button {
+            opacity: var(--bg-switcher-opacity);
+            visibility: var(--bg-switcher-visibility);
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            position: absolute;
+            top: 50px;
+            right: 50px;
         }
         
         .admin-panel {
@@ -336,7 +349,7 @@
                 right: 15px;
             }
             
-            .theme-toggle, .admin-toggle {
+            .theme-toggle, .admin-toggle, .bg-switch-button {
                 width: 35px;
                 height: 35px;
                 font-size: 1rem;
@@ -469,6 +482,7 @@
         <div class="header-buttons">
             <button class="admin-toggle" title="Панель администратора">⚙️</button>
             <button class="theme-toggle" title="Переключить тему">☀️</button>
+            <button class="bg-switch-button" title="Сменить фон">🌌</button>
         </div>
         <h1>Домашний <a href="http://192.168.1.142">сервер</a></h1>
     </header>
@@ -486,16 +500,20 @@
     <div class="container">
         <div class="apps-grid">
             <div class="app-card">
-                <img src="img/jellyfin.svg" alt="Приложение 1">
+                <img src="img/jellyfin.svg" alt="jellyfin">
                 <div class="app-name">jellyfin</div>
             </div>
             <div class="app-card">
-                <img src="img/photoprism.svg" alt="Приложение 2">
+                <img src="img/photoprism.svg" alt="photoprism">
                 <div class="app-name">photoprism</div>
             </div>
             <div class="app-card">
-                <img src="img/qbittorrent.png" alt="Приложение 3">
+                <img src="img/qbittorrent.png" alt="qbittorrent">
                 <div class="app-name">qbittorrent</div>
+            </div>
+            <div class="app-card">
+                <img src="img/smb.png" alt="smb">
+                <div class="app-name">smb</div>
             </div>
         </div>
     </div>
@@ -516,12 +534,12 @@
                 <div class="password-credentials">Логин: admin<br>Пароль: 121212</div>
             </div>
             <div class="password-item">
-                <div class="password-service">Portainer</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: </div>
+                <div class="password-service">smb</div>
+                <div class="password-credentials">Логин: home<br>Пароль: home</div>
             </div>
             <div class="password-item">
-                <div class="password-service">SMB</div>
-                <div class="password-credentials">Логин: home<br>Пароль: home</div>
+                <div class="password-service">Portainer</div>
+                <div class="password-credentials">Логин: admin<br>Пароль: </div>
             </div>
         </div>
     </div>
@@ -529,17 +547,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.querySelector('.theme-toggle');
+            const bgSwitchButton = document.querySelector('.bg-switch-button');
+            
             themeToggle.addEventListener('click', function() {
                 document.body.classList.toggle('dark-mode');
                 const isDark = document.body.classList.contains('dark-mode');
                 themeToggle.textContent = isDark ? '🌙' : '☀️';
                 localStorage.setItem('darkMode', isDark);
+                
+                if (isDark) {
+                    bgSwitchButton.style.opacity = '1';
+                    bgSwitchButton.style.visibility = 'visible';
+                } else {
+                    bgSwitchButton.style.opacity = '0';
+                    bgSwitchButton.style.visibility = 'hidden';
+                }
             });
             
             if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 themeToggle.textContent = '🌙';
+                bgSwitchButton.style.opacity = '1';
+                bgSwitchButton.style.visibility = 'visible';
             }
+            
+            bgSwitchButton.addEventListener('click', function() {
+                window.location.href = 'particle.html';
+            });
             
             const adminToggle = document.querySelector('.admin-toggle');
             const adminPanel = document.querySelector('.admin-panel');
@@ -582,6 +616,7 @@
                         case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
                         case 'photoprism': url = 'http://192.168.1.142:20800'; break;
                         case 'qbittorrent': url = 'http://192.168.1.142:30024'; break;
+                        case 'smb': url = 'file://truenas/mnt/cc/'; break;
                         default: url = '#';
                     }
                     
