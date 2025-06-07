@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Домашний сервер</title>
@@ -25,8 +26,6 @@
             --passwords-panel-bg: #f5f5f5;
             --passwords-panel-shadow: 0 -5px 15px rgb(0, 0, 0);
             --passwords-button-color: #333;
-            --bg-switcher-opacity: 0;
-            --bg-switcher-visibility: hidden;
         }
 
         .dark-mode {
@@ -46,8 +45,6 @@
             --passwords-panel-bg: #111111;
             --passwords-panel-shadow: 0 -10px 20px rgba(255, 255, 255, 0.3);
             --passwords-button-color: #f0f0f0;
-            --bg-switcher-opacity: 1;
-            --bg-switcher-visibility: visible;
         }
 
         * {
@@ -156,7 +153,7 @@
             transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         
-        .theme-toggle, .admin-toggle, .bg-switch-button {
+        .theme-toggle, .admin-toggle {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -171,18 +168,9 @@
             transition: all 0.3s ease, transform 0.2s ease;
         }
         
-        .theme-toggle:hover, .admin-toggle:hover, .bg-switch-button:hover {
+        .theme-toggle:hover, .admin-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.1) rotate(15deg);
-        }
-        
-        .bg-switch-button {
-            opacity: var(--bg-switcher-opacity);
-            visibility: var(--bg-switcher-visibility);
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-            position: absolute;
-            top: 50px;
-            right: 50px;
         }
         
         .admin-panel {
@@ -349,7 +337,7 @@
                 right: 15px;
             }
             
-            .theme-toggle, .admin-toggle, .bg-switch-button {
+            .theme-toggle, .admin-toggle {
                 width: 35px;
                 height: 35px;
                 font-size: 1rem;
@@ -475,6 +463,47 @@
                 padding: 10px;
             }
         }
+        .github-watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .github-watermark:hover {
+            opacity: 1;
+        }
+
+        .github-watermark a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-color); 
+            font-size: 14px;
+            background: var(--card-bg); 
+            padding: 8px 12px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow); 
+        }
+
+        .github-watermark i {
+            font-size: 20px;
+            color: var(--text-color); 
+            transition: color 0.6s ease; 
+        }
+
+        @media (max-width: 600px) {
+            .github-watermark a span {
+                display: none;
+            }
+            .github-watermark a {
+                padding: 8px;
+                border-radius: 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -482,15 +511,14 @@
         <div class="header-buttons">
             <button class="admin-toggle" title="Панель администратора">⚙️</button>
             <button class="theme-toggle" title="Переключить тему">☀️</button>
-            <button class="bg-switch-button" title="Сменить фон">🌌</button>
         </div>
-        <h1>Домашний <a href="http://192.168.1.142">сервер</a></h1>
+        <h1>Домашний <a href="http://192.168.1.73">сервер</a></h1>
     </header>
     
     <div class="admin-panel">
         <h3>Совершенно секретно</h3>
         <div class="admin-apps">
-            <div class="admin-app" data-url="http://192.168.1.142:31015">
+            <div class="admin-app" data-url="http://192.168.1.73:31015">
                 <img src="img/portainer.png" alt="Portainer">
                 <div class="app-name">Portainer</div>
             </div>
@@ -511,10 +539,10 @@
                 <img src="img/qbittorrent.png" alt="qbittorrent">
                 <div class="app-name">qbittorrent</div>
             </div>
-            <div class="app-card">
-                <img src="img/smb.png" alt="smb">
+            <!-- <div class="app-card">
+                <img src="img/smb.png" alt="Приложение 4">
                 <div class="app-name">smb</div>
-            </div>
+            </div> -->
         </div>
     </div>
     <button class="passwords-button">Показать пароли</button>
@@ -543,37 +571,26 @@
             </div>
         </div>
     </div>
-    
+    <div class="github-watermark">
+    <a href="https://github.com/Rom-q/server_crutch" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i>
+        <span>Github</span>
+    </a>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.querySelector('.theme-toggle');
-            const bgSwitchButton = document.querySelector('.bg-switch-button');
-            
             themeToggle.addEventListener('click', function() {
                 document.body.classList.toggle('dark-mode');
                 const isDark = document.body.classList.contains('dark-mode');
                 themeToggle.textContent = isDark ? '🌙' : '☀️';
                 localStorage.setItem('darkMode', isDark);
-                
-                if (isDark) {
-                    bgSwitchButton.style.opacity = '1';
-                    bgSwitchButton.style.visibility = 'visible';
-                } else {
-                    bgSwitchButton.style.opacity = '0';
-                    bgSwitchButton.style.visibility = 'hidden';
-                }
             });
             
             if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 themeToggle.textContent = '🌙';
-                bgSwitchButton.style.opacity = '1';
-                bgSwitchButton.style.visibility = 'visible';
             }
-            
-            bgSwitchButton.addEventListener('click', function() {
-                window.location.href = 'particle.html';
-            });
             
             const adminToggle = document.querySelector('.admin-toggle');
             const adminPanel = document.querySelector('.admin-panel');
@@ -613,10 +630,10 @@
                     let url;
                     
                     switch(appName) {
-                        case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
-                        case 'photoprism': url = 'http://192.168.1.142:20800'; break;
-                        case 'qbittorrent': url = 'http://192.168.1.142:30024'; break;
-                        case 'smb': url = 'file://truenas/mnt/cc/'; break;
+                        case 'jellyfin': url = 'http://192.168.1.73:30013'; break;
+                        case 'photoprism': url = 'http://192.168.1.73:20800'; break;
+                        case 'qbittorrent': url = 'http://192.168.1.73:30024'; break;
+                        // case 'smb': url = 'file://///192.168.1.73/mnt/cc/'; break;
                         default: url = '#';
                     }
                     
@@ -648,6 +665,63 @@
 
             passwordsPanel.addEventListener('click', function(e) {
                 e.stopPropagation();
+            });
+            function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed'; 
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopiedNotification();
+            } catch (err) {
+                console.error('Не удалось скопировать текст: ', err);
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+            function showCopiedNotification() {
+                const notification = document.createElement('div');
+                notification.textContent = 'Скопировано!';
+                notification.style.position = 'fixed';
+                notification.style.bottom = '20px';
+                notification.style.left = '50%';
+                notification.style.transform = 'translateX(-50%)';
+                notification.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                notification.style.color = 'white';
+                notification.style.padding = '10px 20px';
+                notification.style.borderRadius = '5px';
+                notification.style.zIndex = '1000';
+                notification.style.transition = 'opacity 0.5s';
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 500);
+                }, 1500);
+            }
+
+            document.querySelectorAll('.password-credentials').forEach(credential => {
+                credential.addEventListener('click', function(e) {
+                    const text = this.textContent;
+                    const passwordMatch = text.match(/Пароль:\s*([^\n]*)/);
+                    
+                    if (passwordMatch && passwordMatch[1]) {
+                        copyToClipboard(passwordMatch[1].trim());
+                    } else {
+                        copyToClipboard(text);
+                    }
+                });
+                
+                credential.style.cursor = 'pointer';
+                
+                credential.title = 'Кликните, чтобы скопировать пароль';
             });
         });
     </script>

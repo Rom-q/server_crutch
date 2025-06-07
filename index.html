@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Домашний сервер</title>
@@ -462,6 +463,47 @@
                 padding: 10px;
             }
         }
+        .github-watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .github-watermark:hover {
+            opacity: 1;
+        }
+
+        .github-watermark a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-color); 
+            font-size: 14px;
+            background: var(--card-bg); 
+            padding: 8px 12px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow); 
+        }
+
+        .github-watermark i {
+            font-size: 20px;
+            color: var(--text-color); 
+            transition: color 0.6s ease; 
+        }
+
+        @media (max-width: 600px) {
+            .github-watermark a span {
+                display: none;
+            }
+            .github-watermark a {
+                padding: 8px;
+                border-radius: 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -470,13 +512,13 @@
             <button class="admin-toggle" title="Панель администратора">⚙️</button>
             <button class="theme-toggle" title="Переключить тему">☀️</button>
         </div>
-        <h1>Домашний <a href="http://192.168.1.142">сервер</a></h1>
+        <h1>Домашний <a href="http://192.168.1.73">сервер</a></h1>
     </header>
     
     <div class="admin-panel">
         <h3>Совершенно секретно</h3>
         <div class="admin-apps">
-            <div class="admin-app" data-url="http://192.168.1.142:31015">
+            <div class="admin-app" data-url="http://192.168.1.73:31015">
                 <img src="img/portainer.png" alt="Portainer">
                 <div class="app-name">Portainer</div>
             </div>
@@ -529,7 +571,12 @@
             </div>
         </div>
     </div>
-    
+    <div class="github-watermark">
+    <a href="https://github.com/Rom-q/server_crutch" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i>
+        <span>Github</span>
+    </a>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.querySelector('.theme-toggle');
@@ -583,10 +630,10 @@
                     let url;
                     
                     switch(appName) {
-                        case 'jellyfin': url = 'http://192.168.1.142:30013'; break;
-                        case 'photoprism': url = 'http://192.168.1.142:20800'; break;
-                        case 'qbittorrent': url = 'http://192.168.1.142:30024'; break;
-                        // case 'smb': url = 'file://///192.168.1.142/mnt/cc/'; break;
+                        case 'jellyfin': url = 'http://192.168.1.73:30013'; break;
+                        case 'photoprism': url = 'http://192.168.1.73:20800'; break;
+                        case 'qbittorrent': url = 'http://192.168.1.73:30024'; break;
+                        // case 'smb': url = 'file://///192.168.1.73/mnt/cc/'; break;
                         default: url = '#';
                     }
                     
