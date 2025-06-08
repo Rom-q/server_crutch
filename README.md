@@ -1,5 +1,5 @@
 ## page for my nas
-all links lead to local IPs and they will work if you have a Truenas server at home with ip [192.168.1.142](http://192.168.1.73)
+all links lead to local IPs and they will work if you have a Truenas server at home with ip [192.168.1.73](http://192.168.1.73)
 
 >Standard ports are used for:
 >* [qbittorrent:30024](http://192.168.1.73:30024)
