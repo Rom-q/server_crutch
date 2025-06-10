@@ -512,13 +512,13 @@
             <button class="admin-toggle" title="Панель администратора">⚙️</button>
             <button class="theme-toggle" title="Переключить тему">☀️</button>
         </div>
-        <h1>Домашний <a href="http://192.168.1.73">сервер</a></h1>
+        <h1>Домашний <a href="http://192.168.1.21">сервер</a></h1>
     </header>
     
     <div class="admin-panel">
         <h3>Совершенно секретно</h3>
         <div class="admin-apps">
-            <div class="admin-app" data-url="http://192.168.1.73:31015">
+            <div class="admin-app" data-url="http://192.168.1.21:31015">
                 <img src="img/portainer.png" alt="Portainer">
                 <div class="app-name">Portainer</div>
             </div>
@@ -630,10 +630,10 @@
                     let url;
                     
                     switch(appName) {
-                        case 'jellyfin': url = 'http://192.168.1.73:30013'; break;
-                        case 'photoprism': url = 'http://192.168.1.73:20800'; break;
-                        case 'qbittorrent': url = 'http://192.168.1.73:30024'; break;
-                        // case 'smb': url = 'file://///192.168.1.73/mnt/cc/'; break;
+                        case 'jellyfin': url = 'http://192.168.1.21:30013'; break;
+                        case 'photoprism': url = 'http://192.168.1.21:20800'; break;
+                        case 'qbittorrent': url = 'http://192.168.1.21:30024'; break;
+                        // case 'smb': url = 'file://///192.168.1.21/mnt/cc/'; break;
                         default: url = '#';
                     }
                     
