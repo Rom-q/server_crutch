@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="img/database1.png" type="image/png">
+    <link rel="icon" href="img/database.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Домашний сервер</title>
@@ -10,9 +10,9 @@
         :root {
             --bg-color: #f5f5f5;
             --text-color: #333;
-            --header-color-light: #47d5ee;
-            --header-color-dark: #7e3d00;
-            --header-bg: linear-gradient(135deg, var(--header-color-light) 0%, #04b11b 100%);
+            --header-color-light: #6a11cb;
+            --header-color-dark: #0f2027;
+            --header-bg: linear-gradient(135deg, var(--header-color-light) 0%, #2575fc 100%);
             --card-bg: #fff;
             --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             --footer-bg: #333;
@@ -32,7 +32,7 @@
         .dark-mode {
             --bg-color: #111111;
             --text-color: #f0f0f0;
-            --header-bg: linear-gradient(135deg, var(--header-color-dark) 0%, #114953 50%, #380568 100%);
+            --header-bg: linear-gradient(135deg, var(--header-color-dark) 0%, #203a43 50%, #2c5364 100%);
             --card-bg: #2d2d2d;
             --card-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
             --footer-bg: #1a1a1a;
@@ -519,21 +519,13 @@
     <div class="admin-panel">
         <h3>Совершенно секретно</h3>
         <div class="admin-apps">
-            <div class="admin-app" data-url="http://192.168.1.21:9000">
-                <img src="img/portainer.png" alt="portainer">
-                <div class="app-name">portainer</div>
+            <div class="admin-app" data-url="http://192.168.1.21:31015">
+                <img src="img/portainer.png" alt="Portainer">
+                <div class="app-name">Portainer</div>
             </div>
-            <div class="admin-app" data-url="http://192.168.1.21:9117">
-                <img src="img/jackett.png" alt="jackett">
-                <div class="app-name">jackett</div>
-            </div>
-            <div class="admin-app" data-url="http://192.168.1.21:7878">
-                <img src="img/radarr.png" alt="radarr">
-                <div class="app-name">radarr</div>
-            </div>
-            <div class="admin-app" data-url="http://server.romq.ru/truenasindex">
-                <img src="img/database.png" alt="truenas">
-                <div class="app-name">truenas</div>
+            <div class="admin-app" data-url="http://server.romq.ru">
+                <img src="img/database1.png" alt="OpenMediaVault">
+                <div class="app-name">OpenMediaVault</div>
             </div>
         </div>
     </div>
@@ -553,13 +545,9 @@
                 <div class="app-name">qbittorrent</div>
             </div>
             <!-- <div class="app-card">
-                <img src="img/radarr.png" alt="radarr">
-                <div class="app-name">radarr</div>
-            </div> -->
-            <div class="app-card">
-                <img src="img/smb.png" alt="smb">
+                <img src="img/smb.png" alt="Приложение 4">
                 <div class="app-name">smb</div>
-            </div>
+            </div> -->
         </div>
     </div>
     <button class="passwords-button">Показать пароли</button>
@@ -567,25 +555,25 @@
         <h3>Доступы к сервисам</h3>
         <div class="passwords-list">
             <div class="password-item">
-                <div class="password-service">jellyfin</div>
+                <div class="password-service">Jellyfin</div>
                 <div class="password-credentials">Логин: home<br>Пароль: home</div>
             </div>
             <div class="password-item">
-                <div class="password-service">photoprism</div>
+                <div class="password-service">PhotoPrism</div>
                 <div class="password-credentials">Логин: admin<br>Пароль: 1212</div>
             </div>
             <div class="password-item">
-                <div class="password-service">qbittorrent</div>
+                <div class="password-service">qBittorrent</div>
                 <div class="password-credentials">Логин: admin<br>Пароль: 121212</div>
             </div>
             <div class="password-item">
                 <div class="password-service">smb</div>
-                <div class="password-credentials">Логин: home<br>Пароль: home/homehomehome(для браузерной версии)</div>
+                <div class="password-credentials">Логин: home<br>Пароль: home</div>
             </div>
-            <!-- <div class="password-item">
-                <div class="password-service">radarr</div>
-                <div class="password-credentials">Логин: admin<br>Пароль: 1212</div>
-            </div> -->
+            <div class="password-item">
+                <div class="password-service">Portainer</div>
+                <div class="password-credentials">Логин: admin<br>Пароль: </div>
+            </div>
         </div>
     </div>
     <div class="github-watermark">
@@ -647,12 +635,10 @@
                     let url;
                     
                     switch(appName) {
-                        case 'jellyfin': url = 'http://192.168.1.21:8096'; break;
-                        case 'photoprism': url = 'http://192.168.1.21:2342'; break;
-                        case 'qbittorrent': url = 'http://192.168.1.21:8080'; break;
-                        // case 'radarr': url = 'http://192.168.1.21:7878'; break;
-                        case 'smb': url = 'http://192.168.1.21:8088'; break;
-                        // case 'smb': url = 'file://///192.168.1.21/c'; break;
+                        case 'jellyfin': url = 'http://192.168.1.21:30013'; break;
+                        case 'photoprism': url = 'http://192.168.1.21:20800'; break;
+                        case 'qbittorrent': url = 'http://192.168.1.21:30024'; break;
+                        // case 'smb': url = 'file://///192.168.1.21/mnt/cc/'; break;
                         default: url = '#';
                     }
                     
