@@ -9,3 +9,6 @@ all links lead to local IPs and they will work if you have a OpenMediaVault serv
 >* [filemanager:8088](http://192.168.1.21:8088)
 >* [jackett:9117](http://192.168.1.21:9117)
 >* [radarr:7878](http://192.168.1.21:7878)
+
+
+10.07
