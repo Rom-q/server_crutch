@@ -625,7 +625,7 @@
             document.querySelectorAll('.admin-app').forEach(app => {
                 app.addEventListener('click', function() {
                     const url = this.getAttribute('data-url');
-                    window.open(url, '_blank');
+                    window.open(url, '_self');
                 });
             });
             
@@ -656,7 +656,7 @@
                         default: url = '#';
                     }
                     
-                    window.open(url, '_blank');
+                    window.open(url, '_self');
                 });
             });
             const passwordsButton = document.querySelector('.passwords-button');
